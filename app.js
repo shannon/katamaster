@@ -12,18 +12,16 @@ var express = require('express')
   , mongoose = require('mongoose')
   , api = require('./api');
 
-var SERVER_ADDRESS = process.env.OPENSHIFT_APP_DNS 
-                  || process.env.OPENSHIFT_INTERNAL_IP 
-                  || process.env.OPENSHIFT_NODEJS_IP || "localhost";
-                  
+var SERVER_ADDRESS = process.env.OPENSHIFT_APP_DNS || 'localhost';
+var SERVER_IP = process.env.OPENSHIFT_INTERNAL_IP || process.env.OPENSHIFT_NODEJS_IP || 'localhost';         
 var SERVER_PORT = process.env.OPENSHIFT_INTERNAL_PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
-var DB_ADDRESS = process.env.OPENSHIFT_MONGODB_DB_HOST || 'localhost';
-var DB_PORT =  process.env.OPENSHIFT_MONGODB_DB_PORT || 27017;
+var MONGO_CONNECTION = process.env.OPENSHIFT_MONGODB_DB_URL ||  'mongodb://localhost:27017/';
+var MONGO_DATABASE = 'karatenotebook';
 
 //===Database Connection================================================
 
-mongoose.connect('mongodb://' + DB_ADDRESS + ':' + DB_PORT + '/karatenotebook');
+mongoose.connect(MONGO_CONNECTION + MONGO_DATABASE);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
@@ -31,6 +29,8 @@ db.once('open', function callback () {
 });
 
 //===Authentication====================================================
+
+var RETURN_SERVER = SERVER_ADDRESS + (SERVER_ADDRESS == 'localhost' ? ':' + SERVER_PORT : ''); 
 
 var TWITTER_CONSUMER_KEY = "n3s7bW9qBV3Q1ciMoyuAEw";
 var TWITTER_CONSUMER_SECRET = "B7QOZUxXsao3E4XYow6Ouu0djI5xVGq0kzX9GAg";
@@ -53,8 +53,8 @@ passport.deserializeUser(function(obj, done) {
 
 
 passport.use(new GoogleStrategy({
-    returnURL: 'http://' + SERVER_ADDRESS + ':' + SERVER_PORT + '/auth/google/callback',
-    realm: 'http://' + SERVER_ADDRESS + ':' + SERVER_PORT + '/'
+    returnURL: 'http://' + RETURN_SERVER + '/auth/google/callback',
+    realm: 'http://' + RETURN_SERVER + '/'
   },
   function(identifier, profile, done) {
     api.signIn('google', identifier , profile.displayName, profile.emails[0].value).then(function(user){
@@ -67,7 +67,7 @@ passport.use(new GoogleStrategy({
 passport.use(new TwitterStrategy({
     consumerKey: TWITTER_CONSUMER_KEY,
     consumerSecret: TWITTER_CONSUMER_SECRET,
-    callbackURL: 'http://' + SERVER_ADDRESS + ':' + SERVER_PORT + '/auth/twitter/callback'
+    callbackURL: 'http://' + RETURN_SERVER + '/auth/twitter/callback'
   },
   function(token, tokenSecret, profile, done) {
     api.signIn('twitter', profile.id , profile.displayName, '').then(function(user){
@@ -80,7 +80,7 @@ passport.use(new TwitterStrategy({
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: 'http://' + SERVER_ADDRESS + ':' + SERVER_PORT + '/auth/facebook/callback'
+    callbackURL: 'http://' + RETURN_SERVER + '/auth/facebook/callback'
   },
   function(accessToken, refreshToken, profile, done) {
     api.signIn('facebook', profile.id , profile.displayName, '').then(function(user){
@@ -101,7 +101,7 @@ var app = express();
 
 // all environments
 app.set('port', SERVER_PORT);
-app.set('ipaddress', SERVER_ADDRESS);
+app.set('ipaddress', SERVER_IP);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.favicon());
