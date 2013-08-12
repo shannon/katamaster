@@ -12,7 +12,10 @@ var express = require('express')
   , mongoose = require('mongoose')
   , api = require('./api');
 
-var SERVER_ADDRESS = process.env.OPENSHIFT_INTERNAL_IP || process.env.OPENSHIFT_NODEJS_IP || "localhost";
+var SERVER_ADDRESS = process.env.OPENSHIFT_APP_DNS 
+                  || process.env.OPENSHIFT_INTERNAL_IP 
+                  || process.env.OPENSHIFT_NODEJS_IP || "localhost";
+                  
 var SERVER_PORT = process.env.OPENSHIFT_INTERNAL_PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
 var DB_ADDRESS = process.env.OPENSHIFT_MONGODB_DB_HOST || 'localhost';
