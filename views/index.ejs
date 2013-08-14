@@ -1,5 +1,18 @@
-<% if (!user) { %>
-  <h2>Welcome! Please log in.</h2>
-<% } else { %>
-	<h2>Hello, <%= user.displayName %>.</h2>
-<% } %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <%- include lib.ejs %>
+    <% if(user) { %>
+      <script src='app/app.js'></script>
+    <% } %>
+  </head>
+  <body>
+    <% if (!user) { %>
+      <%- include welcome.html %>
+    <% } else { %>
+    	<h2>Hello, <%= user.displayName %>.</h2>
+    <% } %>
+    <%- include footer.ejs%>
+  </body>
+</html>

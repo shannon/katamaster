@@ -1,0 +1,48 @@
+body {
+  width: 100%;
+  *zoom: 1;
+}
+body:before,
+body:after {
+  content: "";
+  display: table;
+}
+body:after {
+  clear: both;
+}
+html {
+  width: 100%;
+  margin: 0;
+}
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0;
+  overflow: hidden;
+}
+a {
+  color: #00B7FF;
+}
+.masthead {
+  color: #fff;
+  text-align: center;
+  background: #000000 url('../image/banner.jpg') no-repeat;
+  background-size: cover;
+}
+.masthead .container {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 25px;
+}
+.masthead .login {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.masthead h1 {
+  font-size: 120px;
+  line-height: 1;
+  letter-spacing: -2px;
+  margin: 0;
+}
+.masthead p {
+  font-size: 48px;
+  line-height: 1px;
+}

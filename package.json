@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node servers"
   },
   "dependencies": {
     "express": "3.3.5",
     "ejs": "*",
+    "less-middleware": "*",
     "mongoose": "*",
     "q": "*",
     "passport": "*",
@@ -16,5 +17,5 @@
     "passport-facebook": "*"
 
   },
-  "main": "app.js"
+  "main": "server.js"
 }

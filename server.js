@@ -5,13 +5,14 @@
  
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
   , util = require('util')
   , mongoose = require('mongoose')
-  , api = require('./api');
+  , api = require('./api')
+  , constants = require('./constants');
 
+console
 var SERVER_ADDRESS = process.env.OPENSHIFT_APP_DNS || 'localhost';
 var SERVER_IP = process.env.OPENSHIFT_INTERNAL_IP || process.env.OPENSHIFT_NODEJS_IP || 'localhost';         
 var SERVER_PORT = process.env.OPENSHIFT_INTERNAL_PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -20,6 +21,7 @@ var MONGO_CONNECTION = process.env.OPENSHIFT_MONGODB_DB_URL ||  'mongodb://local
 var MONGO_DATABASE = 'karatenotebook';
 
 //===Database Connection================================================
+//sudo mongod --fork --logpath /var/log/mongodb.log --dbpath /var/lib/mongodb/
 
 mongoose.connect(MONGO_CONNECTION + MONGO_DATABASE);
 var db = mongoose.connection;
@@ -104,6 +106,7 @@ app.set('port', SERVER_PORT);
 app.set('ipaddress', SERVER_IP);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+app.use(require('less-middleware')({ src: __dirname + "/public" }));
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
@@ -119,26 +122,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
-
-//===Routes==========================================================================
-
-app.get('/', function(req, res){
-  res.render('index', { user: req.user });
-});
-
-app.get('/account', ensureAuthenticated, function(req, res){
-  res.render('account', { user: req.user });
-});
-
-app.get('/login', function(req, res){
-  res.render('login', { user: req.user });
-});
-
-app.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
-});
-
 
 //===Authentication Routes=============================================================
 
@@ -168,6 +151,16 @@ app.get('/auth/facebook/callback',
   function(req, res) {
     res.redirect('/');
   });
+  
+//===Routes==========================================================================
+
+app.get('/', routes.index);
+
+app.get('/profile', ensureAuthenticated, routes.profile);
+
+app.get('/login', routes.login);
+
+app.get('/logout', routes.logout);
   
 //===Start Server=====================================================================
 
