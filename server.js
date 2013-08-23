@@ -14,7 +14,7 @@ var express = require('express')
 
 console
 var SERVER_ADDRESS = process.env.OPENSHIFT_APP_DNS || 'localhost';
-var SERVER_IP = process.env.OPENSHIFT_INTERNAL_IP || process.env.OPENSHIFT_NODEJS_IP || 'localhost';         
+var SERVER_IP = process.env.OPENSHIFT_INTERNAL_IP || process.env.OPENSHIFT_NODEJS_IP;         
 var SERVER_PORT = process.env.OPENSHIFT_INTERNAL_PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
 var MONGO_CONNECTION = process.env.OPENSHIFT_MONGODB_DB_URL ||  'mongodb://localhost:27017/';
@@ -161,6 +161,10 @@ app.get('/profile', ensureAuthenticated, routes.profile);
 app.get('/login', routes.login);
 
 app.get('/logout', routes.logout);
+
+//===API Routes=====================================================================
+
+app.post('/api/:action', api.route);
   
 //===Start Server=====================================================================
 

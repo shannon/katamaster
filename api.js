@@ -1,5 +1,7 @@
 var Q = require('q');
 var User = require('./models/user');
+var Form = require('./models/form').Form;
+var Step = require('./models/form').Step;
 
 function newUser(type, id, name, email){
   var deferred = Q.defer();
@@ -34,4 +36,20 @@ exports.signIn = function(type, id, name, email){
   return deferred.promise;
 }
 
-exports.findUser = findUser;
+exports.addForm = function(id, name, description){
+  var deferred = Q.defer();  
+  new Form({
+    user: id,
+    name: name,
+    description: description
+  }).save(function(err, form){
+    if(err) deferred.reject(err);
+    else deferred.resolve(form);
+  });
+  return deferred.promise;
+}
+
+
+exports.route = function(req, res){
+  if (!req.isAuthenticated()){}
+}

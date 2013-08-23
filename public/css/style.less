@@ -1,4 +1,5 @@
-@import "grid.less";
+@import "../vendor/bootstrap/less/bootstrap.less";
+@import "../vendor/font-awesome/less/font-awesome.less";
 
 html {
   width: 100%;
@@ -10,36 +11,75 @@ body {
   overflow:hidden;
 }
 
-a {
-  color: #00B7FF;
-}
-
-.masthead {
-  color: #fff;
-  text-align: center;
-  background: #000 url('../image/banner.jpg') no-repeat;
+.welcome {
+  background: url('../images/banner.jpg') no-repeat;
   background-size: cover;
+  
+  .masthead {
+    .jumbotron;
+    color: #fff;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.8);
+  }
+  
+  .login {
+    .make-row();
+    
+    a {
+      .make-xs-column(12);
+      .make-sm-column(4);
+      .make-md-column(2);
+      .make-lg-column(2);
+      .make-sm-column-offset(4);
+      .make-md-column-offset(1);
+      .make-lg-column-offset(1);
+      margin-top: 2em;
+      padding-top: 1em;
+      padding-bottom: 1em;
+    }
+    
+    a:first-child {
+      .make-sm-column-offset(4);
+      .make-md-column-offset(2);
+      .make-lg-column-offset(2);
+    }
+  }
 }
 
-.masthead .container {
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 25px;
+/* Custom Social buttons
+-------------------------------------------------- */
+
+/* Override base .btn styles */
+/* Apply text and background changes to three key states: default, hover, and active (click). */
+.btn-social,
+.btn-social:hover,
+.btn-social:active {
+  color: white;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 
-.masthead .login {
-  margin-top: 25px;
-  margin-bottom: 25px;
+.btn-google, {
+  background-color: #F90101;
 }
 
-.masthead h1 {
-  font-size: 120px;
-  line-height: 1;
-  letter-spacing: -2px;
-  margin: 0;
+.btn-google:hover{
+  background-color: #F53B3B;
 }
 
-.masthead p {
-  font-size: 48px;
-  line-height: 1px;
+.btn-twitter, {
+  background-color: #00aced;
 }
+
+.btn-twitter:hover{
+  background-color: #42BBE9;
+}
+
+.btn-facebook, {
+  background-color: #3B5998;
+}
+
+.btn-facebook:hover{
+  background-color: #576B96;
+}
+
 

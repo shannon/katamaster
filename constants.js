@@ -1,1 +1,1 @@
-exports.APP_NAME = 'Karate Notebook';
+exports.APP_NAME = 'Kata Master';

@@ -1,14 +1,15 @@
-// The User  model
+// The User model
  
 var mongoose = require('mongoose')
    ,Schema = mongoose.Schema
    ,ObjectId = Schema.ObjectId;
  
 var userSchema = new Schema({
-    authType: {type: String},
-    authIdentifier: {type: String},
-    displayName: {type: String},
-    email: {type: String},
+    _id: Schema.Types.ObjectId,
+    authType: String,
+    authIdentifier: String,
+    displayName: String,
+    email: String,
     joined: {type: Date, default: Date.now}
 });
  
